@@ -2,16 +2,37 @@ package br.edu.atitus.api_example.entities;
 
 import java.util.UUID;
 
-public class PointEntity {
+import org.hibernate.annotations.ManyToAny;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "tb_point")
+public class PointEntity {
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.UUID)
 	private UUID id;
 	
+	@Column(length = 250, nullable = false)
 	private String description;
 	
+	@Column(columnDefinition = "decimal(17,14)", nullable = false)
 	private double latitude;
 	
+	@Column(columnDefinition = "decimal(17,14)", nullable = false)
 	private double longetitude;
 	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "iduser")
 	private UserEntity user;
 	
 	

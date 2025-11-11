@@ -1,8 +1,20 @@
 package br.edu.atitus.api_example.services;
 
-import br.edu.atitus.api_example.entities.UserEntity;
+import org.springframework.stereotype.Service;
 
+import br.edu.atitus.api_example.entities.UserEntity;
+import br.edu.atitus.api_example.repositories.UserRepository;
+
+@Service
 public class UserService {
+	
+	private final UserRepository repository;
+	
+	public UserService(UserRepository repository) {
+		super();
+		this.repository = repository;
+	}
+
 
 	public UserEntity save(UserEntity user) throws Exception {
 		
@@ -27,7 +39,8 @@ public class UserService {
 		
 		//TODO validar permissão cadastro ADM
 		
-		//TODO enviar para a camada repository
+		repository.save(user);
+		
 		return user;
 	}
 	
