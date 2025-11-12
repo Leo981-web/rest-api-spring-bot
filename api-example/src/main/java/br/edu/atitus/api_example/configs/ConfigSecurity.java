@@ -32,16 +32,4 @@ public class ConfigSecurity {
 		return new BCryptPasswordEncoder();
 	}
 	
-	@Bean
-	WebMvcConfigurer corsConfugure() {
-		return new WebMvcConfigurer() {
-			@Override
-			public void addCorsMappings(CorsRegistry registry) {
-				registry.addMapping("/**").allowedOrigins("*");
-			}
-		};
-	}
-	
-	
-	
 }
