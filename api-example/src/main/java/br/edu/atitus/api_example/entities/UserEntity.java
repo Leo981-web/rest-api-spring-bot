@@ -1,6 +1,10 @@
 package br.edu.atitus.api_example.entities;
 
+import java.util.Collection;
 import java.util.UUID;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -15,22 +19,24 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "tb_user")
-public class UserEntity {
-	
+public class UserEntity implements UserDetails{
+
 	@Id
-	@GeneratedValue(strategy = GenerationType.UUID)
+	@GeneratedValue(strategy=GenerationType.UUID)
 	private UUID id;
-	
+
 	@Column(length = 100, nullable = false)
 	private String name;
 	
+	@Column(length = 100, nullable = false)
 	private String email;
 	
 	@JsonIgnore
+	@Column(length = 100, nullable = false)
 	private String password;
 	
 	@Enumerated(EnumType.ORDINAL)
-	private TypeUser Type;
+	private TypeUser type;
 
 	public UUID getId() {
 		return id;
@@ -65,10 +71,25 @@ public class UserEntity {
 	}
 
 	public TypeUser getType() {
-		return Type;
+		return type;
 	}
 
 	public void setType(TypeUser type) {
-		Type = type;
+		this.type = type;
 	}
+
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getUsername() {
+		return this.email;
+	}
+	
+	
+	
+	
 }

@@ -2,6 +2,9 @@ package br.edu.atitus.api_example.controllers;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,10 +22,12 @@ public class AuthController {
 	
 	//AuthControler Depende de um objeto UserService
 	private final UserService service;
+	private final AuthenticationConfiguration authconfig;
 	
-	public AuthController(UserService service) {
+	public AuthController(UserService service, AuthenticationConfiguration authconfig) {
 		super();
 		this.service = service;
+		this.authconfig = authconfig;
 	}
 	
 	@PostMapping("/signup")
@@ -34,6 +39,14 @@ public class AuthController {
 		service.save(user);
 		
 		return ResponseEntity.status(201).body(user);
+	}
+	
+	@PostMapping("/signin")
+	public ResponseEntity<String> postSignin(
+			@RequestBody SignupDTO dto) throws AuthenticationException, Exception{
+		authconfig.getAuthenticationManager().authenticate(
+				new UsernamePasswordAuthenticationToken(dto.email(), dto.password()));
+		return ResponseEntity.ok("JWT");
 	}
 	
 	@ExceptionHandler
