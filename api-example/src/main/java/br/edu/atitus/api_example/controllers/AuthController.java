@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.edu.atitus.api_example.components.JwtUtils;
 import br.edu.atitus.api_example.dtos.SignupDTO;
 import br.edu.atitus.api_example.entities.TypeUser;
 import br.edu.atitus.api_example.entities.UserEntity;
@@ -44,9 +45,9 @@ public class AuthController {
 	@PostMapping("/signin")
 	public ResponseEntity<String> postSignin(
 			@RequestBody SignupDTO dto) throws AuthenticationException, Exception{
-		authconfig.getAuthenticationManager().authenticate(
-				new UsernamePasswordAuthenticationToken(dto.email(), dto.password()));
-		return ResponseEntity.ok("JWT");
+		authconfig.getAuthenticationManager().authenticate(new UsernamePasswordAuthenticationToken(dto.email(), dto.password()));
+		String jwt = JwtUtils.generateTokien(dto.email());
+		return ResponseEntity.ok(jwt);
 	}
 	
 	@ExceptionHandler

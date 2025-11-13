@@ -32,8 +32,8 @@ public class PointService {
 		if(point.getLatitude() < -90 || point.getLatitude() > 90)
 			throw new Exception("Latitude Inválida");
 		
-		if(point.getLongititude() < -180 || point.getLongititude() > 180)
-			throw new Exception("Longetude Inválida");
+		if(point.getLongitude() < -180 || point.getLongitude() > 180)
+			throw new Exception("Longtude Inválida");
 		
 		UserEntity userAuth = (UserEntity) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		
